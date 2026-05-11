@@ -15,7 +15,7 @@
 #
 ARG ELIXIR_VERSION=1.18.4
 ARG OTP_VERSION=27.3.4
-ARG DEBIAN_VERSION=bookworm-20250630-slim
+ARG DEBIAN_VERSION=bookworm-20260505-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -51,11 +51,12 @@ COPY priv priv
 COPY lib lib
 COPY assets assets
 
+# Compile the project first so colocated hooks (phoenix-colocated/aws_test)
+# are generated under _build before esbuild bundles them.
+RUN mix compile
+
 # compile assets
 RUN mix assets.deploy
-
-# Compile the release
-RUN mix compile
 
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
