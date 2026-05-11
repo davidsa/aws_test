@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :aws_test, AwsTest.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "secretpassword",
   hostname: "localhost",
   database: "aws_test_dev",
   stacktrace: true,
