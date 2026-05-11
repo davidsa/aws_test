@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16-alpine
+    container_name: aws_test_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -20,10 +21,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: aws_test_app
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
+    command: sh -c "/app/bin/migrate && /app/bin/server"
     environment:
       DATABASE_URL: ecto://postgres:postgres@db/aws_test_prod
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}

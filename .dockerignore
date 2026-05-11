@@ -19,6 +19,11 @@
 .git
 .gitignore
 
+# Local environment files - secrets must never be baked into images
+.env
+.env.*
+!.env.example
+
 # Common development/test artifacts
 /cover/
 /doc/
